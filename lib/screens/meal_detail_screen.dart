@@ -9,7 +9,15 @@ class MealDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(meal.title)),
+      appBar: AppBar(
+        title: Text(meal.title),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.star),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -22,28 +30,39 @@ class MealDetailScreen extends StatelessWidget {
             const SizedBox(height: 14),
             Text(
               'Ingredients',
-              style: Theme.of(context,).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge!.copyWith(
+                color:
+                    Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 14,),
+            const SizedBox(height: 14),
             for (final ingredient in meal.ingredients)
               Text(
                 ingredient,
-                style: Theme.of(context,).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(
+                  color:
+                      Theme.of(
+                        context,
+                      ).colorScheme.onSurface,
                 ),
               ),
-            const SizedBox(height: 24,),
+            const SizedBox(height: 24),
             Text(
               'Steps',
-              style: Theme.of(context,).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge!.copyWith(
+                color:
+                    Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 14,),
+            const SizedBox(height: 14),
             for (final step in meal.steps)
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -53,11 +72,16 @@ class MealDetailScreen extends StatelessWidget {
                 child: Text(
                   step,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context,).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium!.copyWith(
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.onSurface,
                   ),
                 ),
-              )
+              ),
           ],
         ),
       ),
