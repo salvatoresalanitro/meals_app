@@ -13,7 +13,6 @@ class MealItemTrait extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           icon,
