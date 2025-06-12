@@ -8,25 +8,32 @@ class FiltersScreen extends StatefulWidget {
   State<FiltersScreen> createState() => _FiltersScreenState();
 }
 
+enum Filter {
+  glutenFree,
+  lactoseFree,
+  vegetarian,
+  vegan 
+}
+
 class _FiltersScreenState extends State<FiltersScreen> {
   var _glutenFreeFilterSet = false;
   var _lactoseFreeFilterSet = false;
   var _vegetarianFilterSet = false;
   var _veganFilterSet = false;
 
-  void _updateFilter(String filterType, bool isChecked) {
+  void _updateFilter(Filter filterType, bool isChecked) {
     setState(() {
       switch (filterType) {
-        case 'gluten':
+        case Filter.glutenFree:
           _glutenFreeFilterSet = isChecked;
           break;
-        case 'lactose':
+        case Filter.lactoseFree:
           _lactoseFreeFilterSet = isChecked;
           break;
-        case 'vegetarian':
+        case Filter.vegetarian:
           _vegetarianFilterSet = isChecked;
           break;
-        case 'vegan':
+        case Filter.vegan:
           _veganFilterSet = isChecked;
           break;
       }
@@ -37,37 +44,50 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Your Filters')),
-      body: Column(
-        children: [
-          FilterMeal(
-            filterSet: _glutenFreeFilterSet,
-            filterTitle: 'Gluten-free',
-            filterSubtitle: 'Only include gluten-free meals.',
-            onChange:
-                (isChecked) => _updateFilter('gluten', isChecked),
-          ),
-          FilterMeal(
-            filterSet: _lactoseFreeFilterSet,
-            filterTitle: 'Lactose-free',
-            filterSubtitle: 'Only include lactose-free meals.',
-            onChange:
-                (isChecked) => _updateFilter('lactose', isChecked),
-          ),
-          FilterMeal(
-            filterSet: _vegetarianFilterSet,
-            filterTitle: 'Vegetarian',
-            filterSubtitle: 'Only include vegetarian meals.',
-            onChange:
-                (isChecked) => _updateFilter('vegetarian', isChecked),
-          ),
-          FilterMeal(
-            filterSet: _veganFilterSet,
-            filterTitle: 'Vegan',
-            filterSubtitle: 'Only include vegan meals.',
-            onChange:
-                (isChecked) => _updateFilter('vegan', isChecked),
-          ),
-        ],
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+          Navigator.of(context).pop({
+            Filter.glutenFree: _glutenFreeFilterSet,
+            Filter.lactoseFree: _lactoseFreeFilterSet,
+            Filter.vegetarian: _vegetarianFilterSet,
+            Filter.vegan: _veganFilterSet,
+          });
+        },
+        child: Column(
+          children: [
+            FilterMeal(
+              filterSet: _glutenFreeFilterSet,
+              filterTitle: 'Gluten-free',
+              filterSubtitle: 'Only include gluten-free meals.',
+              onChange:
+                  (isChecked) => _updateFilter(Filter.glutenFree, isChecked),
+            ),
+            FilterMeal(
+              filterSet: _lactoseFreeFilterSet,
+              filterTitle: 'Lactose-free',
+              filterSubtitle: 'Only include lactose-free meals.',
+              onChange:
+                  (isChecked) => _updateFilter(Filter.lactoseFree, isChecked),
+            ),
+            FilterMeal(
+              filterSet: _vegetarianFilterSet,
+              filterTitle: 'Vegetarian',
+              filterSubtitle: 'Only include vegetarian meals.',
+              onChange:
+                  (isChecked) =>
+                      _updateFilter(Filter.vegetarian, isChecked),
+            ),
+            FilterMeal(
+              filterSet: _veganFilterSet,
+              filterTitle: 'Vegan',
+              filterSubtitle: 'Only include vegan meals.',
+              onChange:
+                  (isChecked) => _updateFilter(Filter.vegan, isChecked),
+            ),
+          ],
+        ),
       ),
     );
   }
