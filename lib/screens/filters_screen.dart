@@ -2,24 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/widgets/filter_meal.dart';
 
 class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key});
+  const FiltersScreen({super.key, required this.currentFilters});
+
+  final Map<Filter, bool> currentFilters;
 
   @override
   State<FiltersScreen> createState() => _FiltersScreenState();
 }
 
-enum Filter {
-  glutenFree,
-  lactoseFree,
-  vegetarian,
-  vegan 
-}
+enum Filter { glutenFree, lactoseFree, vegetarian, vegan }
 
 class _FiltersScreenState extends State<FiltersScreen> {
   var _glutenFreeFilterSet = false;
   var _lactoseFreeFilterSet = false;
   var _vegetarianFilterSet = false;
   var _veganFilterSet = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _glutenFreeFilterSet = widget.currentFilters[Filter.glutenFree]!;
+    _lactoseFreeFilterSet = widget.currentFilters[Filter.lactoseFree]!;
+    _vegetarianFilterSet = widget.currentFilters[Filter.vegetarian]!;
+    _veganFilterSet = widget.currentFilters[Filter.vegan]!;
+  }
 
   void _updateFilter(Filter filterType, bool isChecked) {
     setState(() {
@@ -62,14 +68,16 @@ class _FiltersScreenState extends State<FiltersScreen> {
               filterTitle: 'Gluten-free',
               filterSubtitle: 'Only include gluten-free meals.',
               onChange:
-                  (isChecked) => _updateFilter(Filter.glutenFree, isChecked),
+                  (isChecked) =>
+                      _updateFilter(Filter.glutenFree, isChecked),
             ),
             FilterMeal(
               filterSet: _lactoseFreeFilterSet,
               filterTitle: 'Lactose-free',
               filterSubtitle: 'Only include lactose-free meals.',
               onChange:
-                  (isChecked) => _updateFilter(Filter.lactoseFree, isChecked),
+                  (isChecked) =>
+                      _updateFilter(Filter.lactoseFree, isChecked),
             ),
             FilterMeal(
               filterSet: _vegetarianFilterSet,
@@ -84,7 +92,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
               filterTitle: 'Vegan',
               filterSubtitle: 'Only include vegan meals.',
               onChange:
-                  (isChecked) => _updateFilter(Filter.vegan, isChecked),
+                  (isChecked) =>
+                      _updateFilter(Filter.vegan, isChecked),
             ),
           ],
         ),
