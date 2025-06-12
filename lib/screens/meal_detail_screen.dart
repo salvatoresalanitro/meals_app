@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/favorites_provider.dart';
 
-class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({
-    super.key,
-    required this.meal,
-  });
+class MealDetailScreen extends ConsumerWidget {
+  const MealDetailScreen({super.key, required this.meal});
 
   final Meal meal;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
             onPressed: () {
-              onToggleFavorite(meal);
+              final wasAdded = ref
+                  .read(favoriteMealsProvider.notifier)
+                  .toggleMealFavoriteStatus(meal);
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    wasAdded
+                        ? 'Meal added as a favorite.'
+                        : 'Meal removed as favorite.',
+                  ),
+                ),
+              );
             },
             icon: const Icon(Icons.star),
           ),
@@ -35,11 +46,8 @@ class MealDetailScreen extends StatelessWidget {
             const SizedBox(height: 14),
             Text(
               'Ingredients',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge!.copyWith(
-                color:
-                    Theme.of(context).colorScheme.primary,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -50,20 +58,14 @@ class MealDetailScreen extends StatelessWidget {
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium!.copyWith(
-                  color:
-                      Theme.of(
-                        context,
-                      ).colorScheme.onSurface,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             const SizedBox(height: 24),
             Text(
               'Steps',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge!.copyWith(
-                color:
-                    Theme.of(context).colorScheme.primary,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -80,10 +82,7 @@ class MealDetailScreen extends StatelessWidget {
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium!.copyWith(
-                    color:
-                        Theme.of(
-                          context,
-                        ).colorScheme.onSurface,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
